@@ -2,11 +2,11 @@
 const webApps = [
   {
     name: "Project Management",
-    url: "https://example.com/project-management"
+    url: "/management"
   },
   {
-    name: "Portfolio Builder",
-    url: "https://example.com/portfolio-builder"
+    name: "Resource Database",
+    url: "/resources"
   },
   {
     name: "Collaboration Platform",
