@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitHub OAuth Login Example</title>
+</head>
+<body>
+  <button onclick="loginWithGitHub()">Login with GitHub</button>
+
+  <script>
+    // GitHub OAuth configuration
+    const clientId = '72975423eda8b0be6f31';
+    const redirectUri = 'https://artstars.github.io/';
+    const authorizationUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
+
+    // Function to initiate the GitHub OAuth flow
+    function loginWithGitHub() {
+      window.location.href = authorizationUrl;
+    }
+
+    // Function to handle the callback and retrieve the access token
+    function handleCallback() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+
+      // Make a request to your server-side endpoint to exchange the code for an access token
+      // Implement the server-side logic to securely handle the exchange and return the access token
+
+      // Once you have the access token, you can use it to make API requests to fetch user data
+      // Implement the necessary API calls on the client-side using the access token
+    }
+
+    // Call the handleCallback function when the page loads
+    handleCallback();
+  </script>
+</body>
+</html>
