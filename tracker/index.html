@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Time Tracker</h1>
+  </header>
+  
+  <main>
+    <form id="taskForm">
+      <label for="taskName">Task Name:</label>
+      <input type="text" id="taskName" required>
+      <button type="submit">Start Task</button>
+    </form>
+    
+    <div id="taskList">
+      <!-- Task items will be dynamically generated here -->
+    </div>
+  </main>
+  
+  <script src="script.js"></script>
+</body>
+</html>
