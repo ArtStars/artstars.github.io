@@ -30,7 +30,7 @@ function displayTasks() {
   const taskList = document.getElementById('taskList');
   taskList.innerHTML = '';
 
-  const tasks = loadTasksFromCookie();
+  const tasks = loadTasksFromLocalStorage();
 
   // Generate task items
   tasks.forEach(task => {
@@ -44,36 +44,34 @@ function startTask(taskName) {
   const startTime = new Date();
   const task = { name: taskName, startTime };
 
-  const tasks = loadTasksFromCookie();
+  const tasks = loadTasksFromLocalStorage();
   tasks.push(task);
 
-  saveTasksToCookie(tasks);
+  saveTasksToLocalStorage(tasks);
 }
 
 // Function to stop a task
 function stopTask(taskIndex) {
-  const tasks = loadTasksFromCookie();
+  const tasks = loadTasksFromLocalStorage();
 
   if (taskIndex >= 0 && taskIndex < tasks.length) {
     const endTime = new Date();
     tasks[taskIndex].endTime = endTime;
-    saveTasksToCookie(tasks);
+    saveTasksToLocalStorage(tasks);
     displayTasks();
   }
 }
 
-// Function to save tasks to a cookie
-function saveTasksToCookie(tasks) {
-  const jsonTasks = JSON.stringify(tasks);
-  document.cookie = `tasks=${encodeURIComponent(jsonTasks)}`;
+// Function to save tasks to local storage
+function saveTasksToLocalStorage(tasks) {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Function to load tasks from a cookie
-function loadTasksFromCookie() {
-  const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)tasks\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  if (cookieValue) {
-    const decodedValue = decodeURIComponent(cookieValue);
-    return JSON.parse(decodedValue);
+// Function to load tasks from local storage
+function loadTasksFromLocalStorage() {
+  const tasksString = localStorage.getItem('tasks');
+  if (tasksString) {
+    return JSON.parse(tasksString);
   }
   return [];
 }
