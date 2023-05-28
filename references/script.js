@@ -27,8 +27,7 @@ addButton.addEventListener('click', () => {
 function displayReference(reference) {
   const div = document.createElement('div');
   const img = document.createElement('img');
-  const pCaption = document.createElement('p');
-  const pText = document.createElement('p');
+  const p = document.createElement('p');
   const removeButton = document.createElement('button');
 
   if (reference.imageURL.startsWith('data:image')) {
