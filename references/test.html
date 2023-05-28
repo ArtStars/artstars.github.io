@@ -1,0 +1,20 @@
+<html><body>
+  <script src="text/javascript">
+  var create = document.getElementById('create'),
+        textbox = document.getElementById('textbox');
+        create.addEventListener('click', function () {
+        var link = document.createElement('a');
+        link.setAttribute('download', 'info.txt');
+        link.href = makeTextFile(textbox.value);
+        document.body.appendChild(link);
+
+          // wait for the link to be added to the document
+          window.requestAnimationFrame(function () {
+          var event = new MouseEvent('click');
+          link.dispatchEvent(event);
+           document.body.removeChild(link);
+         });
+
+          }, false);
+  </script>
+</body></html>
