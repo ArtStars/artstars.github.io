@@ -66,19 +66,3 @@ p {
 #load-button {
   margin-top: 20px;
 }
-
-#file-input {
-  display: none;
-}
-
-#file-label {
-  display: inline-block;
-  cursor: pointer;
-  background-color: #ddd;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-#file-label i {
-  margin-right: 5px;
-}
