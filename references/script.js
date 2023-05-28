@@ -1,6 +1,5 @@
 // Retrieve elements from the DOM
 const imageInput = document.querySelector('#image-input');
-const captionInput = document.querySelector('#caption-input');
 const textInput = document.querySelector('#text-input');
 const addButton = document.querySelector('#add-button');
 const saveButton = document.querySelector('#save-button');
@@ -13,18 +12,16 @@ let references = [];
 // Event listener for adding images and text
 addButton.addEventListener('click', () => {
   const imageURL = imageInput.value;
-  const caption = captionInput.value;
   const text = textInput.value;
 
   // Create a new reference object
-  const reference = { imageURL, caption, text };
+  const reference = { imageURL, text };
 
   // Add the reference to the array
   references.push(reference);
 
   // Clear input fields
   imageInput.value = '';
-  captionInput.value = '';
   textInput.value = '';
 
   // Display the reference
@@ -35,18 +32,15 @@ addButton.addEventListener('click', () => {
 function displayReference(reference) {
   const div = document.createElement('div');
   const img = document.createElement('img');
-  const pCaption = document.createElement('p');
-  const pText = document.createElement('p');
+  const p = document.createElement('p');
   const removeButton = document.createElement('button');
 
   img.src = reference.imageURL;
-  pCaption.textContent = reference.caption;
-  pText.innerHTML = marked(reference.text);
+  p.textContent = reference.text;
   removeButton.innerHTML = '<i class="fas fa-times"></i>';
 
   div.appendChild(img);
-  div.appendChild(pCaption);
-  div.appendChild(pText);
+  div.appendChild(p);
   div.appendChild(removeButton);
 
   container.appendChild(div);
