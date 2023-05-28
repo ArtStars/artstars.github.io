@@ -31,7 +31,15 @@ function displayReference(reference) {
   const pText = document.createElement('p');
   const removeButton = document.createElement('button');
 
-  img.src = reference.imageURL;
+  if (reference.imageURL.startsWith('data:image')) {
+    img.src = reference.imageURL;
+  } else {
+    img.src = reference.imageURL;
+    img.onerror = () => {
+      img.src = 'placeholder.png'; // Replace with a placeholder image path
+    };
+  }
+
   pCaption.textContent = reference.caption;
   pText.innerHTML = marked(reference.text);
   removeButton.innerHTML = '<i class="fas fa-times"></i>';
