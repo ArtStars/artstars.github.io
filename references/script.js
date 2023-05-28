@@ -9,7 +9,7 @@ const container = document.querySelector('#container');
 // Store reference data
 let references = [];
 
-// Event listeners for adding images and text
+// Event listener for adding images and text
 addButton.addEventListener('click', () => {
   const imageURL = imageInput.value;
   const text = textInput.value;
@@ -48,8 +48,23 @@ saveButton.addEventListener('click', () => {
   // Convert references array to JSON string
   const data = JSON.stringify(references);
   
-  // Save the data to local storage
-  localStorage.setItem('references', data);
+  // Create a Blob object with the data
+  const blob = new Blob([data], { type: 'application/json' });
+  
+  // Create a download URL for the Blob object
+  const downloadURL = URL.createObjectURL(blob);
+  
+  // Create a temporary <a> element to trigger the download
+  const link = document.createElement('a');
+  link.href = downloadURL;
+  link.download = 'references.json';
+  
+  // Append the link to the document and trigger the click event
+  document.body.appendChild(link);
+  link.click();
+  
+  // Clean up by removing the temporary link
+  document.body.removeChild(link);
 });
 
 // Event listener for loading data
