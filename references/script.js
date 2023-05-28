@@ -9,95 +9,105 @@ const container = document.querySelector('#container');
 let references = [];
 
 addButton.addEventListener('click', () => {
-  const imageURL = imageInput.value;
-  const caption = captionInput.value;
-  const text = textInput.value;
+   const imageURL = imageInput.value;
+   const text = textInput.value;
 
-  const reference = { imageURL, caption, text };
+   // Create a new reference object
+   const reference = { imageURL, text };
 
-  references.push(reference);
+   // Add the reference to the array
+   references.push(reference);
 
-  imageInput.value = '';
-  captionInput.value = '';
-  textInput.value = '';
+   // Clear input fields
+   imageInput.value = '';
+   textInput.value = '';
 
-  displayReference(reference);
-});
+   // Display the reference
+   displayReference(reference);
+ });
+Expand All	@@ -33,36 +33,51 @@ function displayReference(reference) {
+   const div = document.createElement('div');
+   const img = document.createElement('img');
+   const p = document.createElement('p');
+   const removeButton = document.createElement('button');
 
-function displayReference(reference) {
-  const div = document.createElement('div');
-  const img = document.createElement('img');
-  const p = document.createElement('p');
-  const removeButton = document.createElement('button');
+   img.src = reference.imageURL;
+   p.textContent = reference.text;
+   removeButton.innerHTML = '<i class="fas fa-times"></i>';
 
-  if (reference.imageURL.startsWith('data:image')) {
-    img.src = reference.imageURL;
-  } else {
-    img.src = reference.imageURL;
-    img.onerror = () => {
-      img.src = 'placeholder.png'; // Replace with a placeholder image path
-    };
-  }
+   div.appendChild(img);
+   div.appendChild(p);
+   div.appendChild(removeButton);
 
-  pCaption.textContent = reference.caption;
-  pText.innerHTML = marked(reference.text);
-  removeButton.innerHTML = '<i class="fas fa-times"></i>';
+   container.appendChild(div);
 
-  div.appendChild(img);
-  div.appendChild(pCaption);
-  div.appendChild(pText);
-  div.appendChild(removeButton);
+   // Event listener for remove button click
+   removeButton.addEventListener('click', () => {
+     // Remove the reference from the array
+     const index = references.indexOf(reference);
+     if (index > -1) {
+       references.splice(index, 1);
+     }
 
-  container.appendChild(div);
+     // Remove the reference from the container
+     container.removeChild(div);
+   });
+ }
 
-  removeButton.addEventListener('click', () => {
-    const index = references.indexOf(reference);
-    if (index > -1) {
-      references.splice(index, 1);
-    }
+ // Event listener for saving data
+ saveButton.addEventListener('click', () => {
+   // Convert references array to JSON string
+   const data = JSON.stringify(references);
 
-    container.removeChild(div);
-  });
-}
+   // Create a Blob object with the data
+   const blob = new Blob([data], { type: 'application/json' });
 
-saveButton.addEventListener('click', () => {
-  const data = JSON.stringify(references);
+   // Create a download URL for the Blob object
+   const downloadURL = URL.createObjectURL(blob);
 
-  const blob = new Blob([data], { type: 'application/json' });
-  const downloadURL = URL.createObjectURL(blob);
+   // Create a temporary <a> element to trigger the download
+   const link = document.createElement('a');
+   link.href = downloadURL;
+   link.download = 'references.json';
 
-  const link = document.createElement('a');
-  link.href = downloadURL;
-  link.download = 'references.json';
+   // Append the link to the document and trigger the click event
+   document.body.appendChild(link);
+   link.click();
 
-  document.body.appendChild(link);
-  link.click();
+   // Clean up by removing the temporary link
+   document.body.removeChild(link);
+ });
+Expand All	@@ -72,33 +87,33 @@ loadButton.addEventListener('click', () => {
+   // Create an input element of type 'file'
+   const fileInput = document.createElement('input');
+   fileInput.type = 'file';
 
-  document.body.removeChild(link);
-});
+   // Trigger the file input dialog when the input element is clicked
+   fileInput.click();
 
-loadButton.addEventListener('click', () => {
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
+   // Event listener for file input change
+   fileInput.addEventListener('change', () => {
+     // Retrieve the selected file
+     const file = fileInput.files[0];
 
-  fileInput.click();
+     // Create a FileReader object
+     const reader = new FileReader();
 
-  fileInput.addEventListener('change', () => {
-    const file = fileInput.files[0];
+     // Event listener for file reading completion
+     reader.addEventListener('load', () => {
+       // Parse the JSON string from the loaded file
+       const data = reader.result;
+       references = JSON.parse(data);
 
-    const reader = new FileReader();
+       // Clear the container
+       container.innerHTML = '';
 
-    reader.addEventListener('load', () => {
-      const data = reader.result;
-      references = JSON.parse(data);
+       // Display all references
+       references.forEach(reference => {
+         displayReference(reference);
+       });
+     });
 
-      container.innerHTML = '';
-
-      references.forEach(reference => {
-        displayReference(reference);
-      });
-    });
-
-    reader.readAsText(file);
-  });
-});
+     // Read the file as text
+     reader.readAsText(file);
+   });
