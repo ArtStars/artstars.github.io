@@ -1,14 +1,16 @@
-const imageInput = document.querySelector('#image-input');
-const captionInput = document.querySelector('#caption-input');
-const textInput = document.querySelector('#text-input');
-const addButton = document.querySelector('#add-button');
-const saveButton = document.querySelector('#save-button');
-const loadButton = document.querySelector('#load-button');
-const container = document.querySelector('#container');
+// Retrieve elements from the DOM
+ const imageInput = document.querySelector('#image-input');
+ const textInput = document.querySelector('#text-input');
+ const addButton = document.querySelector('#add-button');
+ const saveButton = document.querySelector('#save-button');
+ const loadButton = document.querySelector('#load-button');
+ const container = document.querySelector('#container');
 
-let references = [];
+ // Store reference data
+ let references = [];
 
-addButton.addEventListener('click', () => {
+ // Event listener for adding images and text
+ addButton.addEventListener('click', () => {
    const imageURL = imageInput.value;
    const text = textInput.value;
 
@@ -25,7 +27,9 @@ addButton.addEventListener('click', () => {
    // Display the reference
    displayReference(reference);
  });
-Expand All	@@ -33,36 +33,51 @@ function displayReference(reference) {
+
+ // Function to display a reference
+ function displayReference(reference) {
    const div = document.createElement('div');
    const img = document.createElement('img');
    const p = document.createElement('p');
@@ -77,7 +81,9 @@ Expand All	@@ -33,36 +33,51 @@ function displayReference(reference) {
    // Clean up by removing the temporary link
    document.body.removeChild(link);
  });
-Expand All	@@ -72,33 +87,33 @@ loadButton.addEventListener('click', () => {
+
+ // Event listener for loading data from file
+ loadButton.addEventListener('click', () => {
    // Create an input element of type 'file'
    const fileInput = document.createElement('input');
    fileInput.type = 'file';
@@ -111,3 +117,4 @@ Expand All	@@ -72,33 +87,33 @@ loadButton.addEventListener('click', () => {
      // Read the file as text
      reader.readAsText(file);
    });
+ });
