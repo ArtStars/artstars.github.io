@@ -1,0 +1,68 @@
+/* Body and container styling */
+body {
+  background-color: #2e3440;
+  color: #d8dee9;
+  font-family: Arial, sans-serif;
+}
+
+#container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Header styling */
+header {
+  background-color: #5e81ac;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  color: #eceff4;
+}
+
+/* Input field and button styling */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #4c566a;
+  color: #d8dee9;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #81a1c1;
+  color: #eceff4;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #88c0d0;
+}
+
+/* Reference display styling */
+div {
+  background-color: #4c566a;
+  padding: 10px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  margin-top: 10px;
+}
+
+/* Save and load button styling */
+#save-button,
+#load-button {
+  margin-top: 20px;
+}
