@@ -1,120 +1,96 @@
-// Retrieve elements from the DOM
- const imageInput = document.querySelector('#image-input');
- const textInput = document.querySelector('#text-input');
- const addButton = document.querySelector('#add-button');
- const saveButton = document.querySelector('#save-button');
- const loadButton = document.querySelector('#load-button');
- const container = document.querySelector('#container');
+const imageInput = document.querySelector('#image-input');
+const captionInput = document.querySelector('#caption-input');
+const textInput = document.querySelector('#text-input');
+const addButton = document.querySelector('#add-button');
+const saveButton = document.querySelector('#save-button');
+const loadButton = document.querySelector('#load-button');
+const container = document.querySelector('#container');
 
- // Store reference data
- let references = [];
+let references = [];
 
- // Event listener for adding images and text
- addButton.addEventListener('click', () => {
-   const imageURL = imageInput.value;
-   const text = textInput.value;
+addButton.addEventListener('click', () => {
+  const imageURL = imageInput.value;
+  const caption = captionInput.value;
+  const text = textInput.value;
 
-   // Create a new reference object
-   const reference = { imageURL, text };
+  const reference = { imageURL, caption, text };
 
-   // Add the reference to the array
-   references.push(reference);
+  references.push(reference);
 
-   // Clear input fields
-   imageInput.value = '';
-   textInput.value = '';
+  imageInput.value = '';
+  captionInput.value = '';
+  textInput.value = '';
 
-   // Display the reference
-   displayReference(reference);
- });
+  displayReference(reference);
+});
 
- // Function to display a reference
- function displayReference(reference) {
-   const div = document.createElement('div');
-   const img = document.createElement('img');
-   const p = document.createElement('p');
-   const removeButton = document.createElement('button');
+function displayReference(reference) {
+  const div = document.createElement('div');
+  const img = document.createElement('img');
+  const pCaption = document.createElement('p');
+  const pText = document.createElement('p');
+  const removeButton = document.createElement('button');
 
-   img.src = reference.imageURL;
-   p.textContent = reference.text;
-   removeButton.innerHTML = '<i class="fas fa-times"></i>';
+  img.src = reference.imageURL;
+  pCaption.textContent = reference.caption;
+  pText.innerHTML = marked(reference.text);
+  removeButton.innerHTML = '<i class="fas fa-times"></i>';
 
-   div.appendChild(img);
-   div.appendChild(p);
-   div.appendChild(removeButton);
+  div.appendChild(img);
+  div.appendChild(pCaption);
+  div.appendChild(pText);
+  div.appendChild(removeButton);
 
-   container.appendChild(div);
+  container.appendChild(div);
 
-   // Event listener for remove button click
-   removeButton.addEventListener('click', () => {
-     // Remove the reference from the array
-     const index = references.indexOf(reference);
-     if (index > -1) {
-       references.splice(index, 1);
-     }
+  removeButton.addEventListener('click', () => {
+    const index = references.indexOf(reference);
+    if (index > -1) {
+      references.splice(index, 1);
+    }
 
-     // Remove the reference from the container
-     container.removeChild(div);
-   });
- }
+    container.removeChild(div);
+  });
+}
 
- // Event listener for saving data
- saveButton.addEventListener('click', () => {
-   // Convert references array to JSON string
-   const data = JSON.stringify(references);
+saveButton.addEventListener('click', () => {
+  const data = JSON.stringify(references);
 
-   // Create a Blob object with the data
-   const blob = new Blob([data], { type: 'application/json' });
+  const blob = new Blob([data], { type: 'application/json' });
+  const downloadURL = URL.createObjectURL(blob);
 
-   // Create a download URL for the Blob object
-   const downloadURL = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = downloadURL;
+  link.download = 'references.json';
 
-   // Create a temporary <a> element to trigger the download
-   const link = document.createElement('a');
-   link.href = downloadURL;
-   link.download = 'references.json';
+  document.body.appendChild(link);
+  link.click();
 
-   // Append the link to the document and trigger the click event
-   document.body.appendChild(link);
-   link.click();
+  document.body.removeChild(link);
+});
 
-   // Clean up by removing the temporary link
-   document.body.removeChild(link);
- });
+loadButton.addEventListener('click', () => {
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
 
- // Event listener for loading data from file
- loadButton.addEventListener('click', () => {
-   // Create an input element of type 'file'
-   const fileInput = document.createElement('input');
-   fileInput.type = 'file';
+  fileInput.click();
 
-   // Trigger the file input dialog when the input element is clicked
-   fileInput.click();
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
 
-   // Event listener for file input change
-   fileInput.addEventListener('change', () => {
-     // Retrieve the selected file
-     const file = fileInput.files[0];
+    const reader = new FileReader();
 
-     // Create a FileReader object
-     const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      const data = reader.result;
+      references = JSON.parse(data);
 
-     // Event listener for file reading completion
-     reader.addEventListener('load', () => {
-       // Parse the JSON string from the loaded file
-       const data = reader.result;
-       references = JSON.parse(data);
+      container.innerHTML = '';
 
-       // Clear the container
-       container.innerHTML = '';
+      references.forEach(reference => {
+        displayReference(reference);
+      });
+    });
 
-       // Display all references
-       references.forEach(reference => {
-         displayReference(reference);
-       });
-     });
-
-     // Read the file as text
-     reader.readAsText(file);
-   });
- });
+    reader.readAsText(file);
+  });
+});
