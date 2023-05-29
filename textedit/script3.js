@@ -1,5 +1,3 @@
-const saveButton = document.getElementById("saveBtn");
-
 var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
     mode: "markdown",
     theme: "monokai",
@@ -23,26 +21,20 @@ document.getElementById("openBtn").addEventListener("change", function (e) {
     reader.readAsText(file);
 });
 
- // Event listener for saving data
- saveButton.addEventListener('click', () => {
-   // Convert references array to JSON string
-   const data = JSON.stringify(references);
+// Event listener for the "Save" button
+document.getElementById("saveBtn").addEventListener("click", function () {
+    var markdownText = editor.getValue();
+    var blob = new Blob([markdownText], { type: "text/plain;charset=utf-8" });
+    var fileName = "document.md";
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+});
 
-   // Create a Blob object with the data
-   const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
-
-   // Create a download URL for the Blob object
-   const downloadURL = URL.createObjectURL(blob);
-
-   // Create a temporary <a> element to trigger the download
-   const link = document.createElement('a');
-   link.href = downloadURL;
-   link.download = 'document.md';
-
-   // Append the link to the document and trigger the click event
-   document.body.appendChild(link);
-   link.click();
-
-   // Clean up by removing the temporary link
-   document.body.removeChild(link);
- });
+// Update preview on editor change
+editor.on("change", function () {
+    var markdownText = editor.getValue();
+    var htmlText = converter.makeHtml(markdownText);
+    document.getElementById("preview").innerHTML = htmlText;
+});
