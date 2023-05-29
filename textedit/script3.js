@@ -25,7 +25,11 @@ document.getElementById("openBtn").addEventListener("change", function (e) {
 document.getElementById("saveBtn").addEventListener("click", function () {
     var markdownText = editor.getValue();
     var blob = new Blob([markdownText], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, "document.md"); // Save the file with a default name "document.md"
+    var fileName = "document.md";
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
 });
 
 // Update preview on editor change
