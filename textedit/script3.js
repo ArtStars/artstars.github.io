@@ -26,10 +26,7 @@ document.getElementById("saveBtn").addEventListener("click", function () {
     var markdownText = editor.getValue();
     var blob = new Blob([markdownText], { type: "text/plain;charset=utf-8" });
     var fileName = "document.md";
-    var link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    saveAs(blob, fileName); // Save the file using the FileSaver.js library
 });
 
 // Update preview on editor change
